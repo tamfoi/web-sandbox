@@ -7,7 +7,7 @@
   });
   const messaging = firebase.messaging();
   messaging.usePublicVapidKey(
-    "BM3QvC641_ALh_mXI8VikTd0Z13vLJccbNb4ou8mpJT-mtKlXy7Xmnx4ejeCqWHMiT2taj3xX4u1XCtp58ggSJQ"
+    "BArZNqQ5vVUstUK6Y2XC8kz81fZY9sysUhluKgowzYqr3qfaDSpU9QKAtjyERmAPNRjHFPYWina2SHxrpRSBbY4"
   );
 
   /**
@@ -27,6 +27,13 @@
         .requestPermission()
         .then(function() {
           // 通知が許可されたときの処理を書く
+          messaging
+            .getToken()
+            .then(function(refreshedToken) {
+              // トークン取得後の処理を書く
+              console.log(refreshedToken);
+            })
+            .catch(function(err) {});
         })
         .catch(function(err) {
           // 通知が拒否されたときの処理を書く
@@ -39,6 +46,7 @@
           .getToken()
           .then(function(refreshedToken) {
             // トークン取得後の処理を書く
+            console.log(refreshedToken);
           })
           .catch(function(err) {});
       });
@@ -47,20 +55,13 @@
       // ページがフォアグラウンドの時にメッセージを受信する用のイベントハンドラ
       messaging.onMessage(function(payload) {
         console.log(payload);
-        var notificationTitle = payload.notification.title; // タイトル
-        var notificationOptions = {
-          body: payload.notification.body, // 本文
-          icon: payload.notification.icon // アイコン
-        };
-
         if (!("Notification" in window)) {
           // ブラウザが通知機能に対応しているかを判定
         } else if (Notification.permission === "granted") {
           // 通知許可されていたら通知する
-          var notification = new Notification(
-            notificationTitle,
-            notificationOptions
-          );
+          var notification = new Notification("test", {
+            body: "test"
+          });
         }
       });
     })

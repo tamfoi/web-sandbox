@@ -1,5 +1,5 @@
-importScripts("https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/7.3.0/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/6.3.4/firebase-messaging.js");
 
 firebase.initializeApp({
   messagingSenderId: "952876012433"
@@ -7,10 +7,15 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 messaging.setBackgroundMessageHandler(function(payload) {
   console.log(payload);
-  return self.registration.showNotification(
-    "Background Message Title",
-    (notificationOptions = {
-      body: "Background Message body."
+  return self.registration.showNotification("Background Message Title", {
+    body: "Background Message body."
+  });
+});
+
+self.addEventListener("push", function(event) {
+  event.waitUntil(
+    self.registration.showNotification("test", {
+      body: "Tes"
     })
   );
 });
